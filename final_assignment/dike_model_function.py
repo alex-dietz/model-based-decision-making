@@ -33,7 +33,7 @@ class DikeNetwork:
         
         #Number of events is set by default to 30 for 3 planning steps in a total of 200 years. 
         #To adapt the simulation to 80 years we adjust the number of events accordingly to mantain the same density of events (30 events every 66 years or 36 every 80 years)
-        self.num_events = 36
+        self.num_events = np.int(30*80/(200/3))
 
         # load network
         G, dike_list, dike_branch, planning_steps = funs_generate_network.get_network(
