@@ -24,9 +24,16 @@ def Muskingum(C1, C2, C3, Qn0_t1, Qn0_t0, Qn1_t0):
 
 class DikeNetwork:
     def __init__(self):
-        # planning steps
+        #The current model does not account to any time-wize behaviour (climate change, demographics, etc). Thus using the default time window of 200 years is too uncertain.
+        #Additionally, a planning process of 200 years is non viable politically. A compromise has to be set and we propose a policy framework of 80 years (2020 to 2100).
+        self.total_simulation_time = 80
+        
+        # planning steps defined as 1 in order to reduce complexity of the model to make it usefull for identifying a prefered policy
         self.num_planning_steps = 1
-        self.num_events = 30
+        
+        #Number of events is set by default to 30 for 3 planning steps in a total of 200 years. 
+        #To adapt the simulation to 80 years we adjust the number of events accordingly to mantain the same density of events (30 events every 66 years or 36 every 80 years)
+        self.num_events = 30*80/(200/3)
 
         # load network
         G, dike_list, dike_branch, planning_steps = funs_generate_network.get_network(
@@ -55,7 +62,7 @@ class DikeNetwork:
         self.sb = True
 
         # Planning window [y], reasonable for it to be a multiple of num_planning_steps
-        self.n = 80
+        self.n = self.total_simulation_time
         # Years in planning step:
         self.y_step = self.n // self.num_planning_steps
         # Step of dike increase [m]

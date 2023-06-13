@@ -135,3 +135,28 @@ def merge_results(results):
     results_df = pd.concat([pd.DataFrame(experiments),pd.DataFrame(outcomes)], axis=1)
 
     return results_df
+
+
+def convert_to_pivoted_dataframe(outcomes, num_planning_steps):
+    # Create an empty dataframe
+    df = pd.DataFrame()
+
+    # Iterate over the dictionary keys
+    for key in outcomes.keys():
+        # Create a temporary dataframe with the values from the array
+        temp_df = pd.DataFrame(np.array(outcomes[key]).T)
+
+        # Add a new column to the dataframe representing the planning step number
+        temp_df['Planning Step'] = range(num_planning_steps)
+
+        # Pivot the temporary dataframe and set the 'Planning Step' column as the index
+        temp_df = temp_df.melt(id_vars='Planning Step', var_name='Column', value_name=key)
+        
+        # Replace NaN values with 0
+        temp_df[key] = temp_df[key].fillna(0)
+
+        # Append the temporary dataframe to the main dataframe
+        df = pd.concat([df, temp_df], ignore_index=True)
+
+        
+    return df
