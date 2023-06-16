@@ -24,31 +24,27 @@ def Muskingum(C1, C2, C3, Qn0_t1, Qn0_t0, Qn1_t0):
 
 class DikeNetwork:
     def __init__(self):
-        #The current model does not account to any time-wize behaviour (climate change, demographics, etc). Thus using the default time window of 200 years is too uncertain.
-        #Additionally, a planning process of 200 years is non viable politically. A compromise has to be set and we propose a policy framework of 80 years (2020 to 2100).
+        # The current model does not account to any time-wize behaviour (climate change, demographics, etc). Thus using the default time window of 200 years is too uncertain.
+        # Additionally, a planning process of 200 years is non viable politically. A compromise has to be set and we propose a policy framework of 80 years (2020 to 2100).
         self.total_simulation_time = 80
-        
+
         # planning steps defined as 1 in order to reduce complexity of the model to make it usefull for identifying a prefered policy
         self.num_planning_steps = 1
-        
-        #Number of events is set by default to 30 for 3 planning steps in a total of 200 years. 
-        #To adapt the simulation to 80 years we adjust the number of events accordingly to mantain the same density of events (30 events every 66 years or 36 every 80 years)
-        self.num_events = np.int(30*80/(200/3))
+
+        # Number of events is set by default to 30 for 3 planning steps in a total of 200 years.
+        # To adapt the simulation to 80 years we adjust the number of events accordingly to mantain the same density of events (30 events every 66 years or 36 every 80 years)
+        self.num_events = np.int32(30 * 80 / (200 / 3))
 
         # load network
-        G, dike_list, dike_branch, planning_steps = funs_generate_network.get_network(
-            self.num_planning_steps
-        )
+        G, dike_list, dike_branch, planning_steps = funs_generate_network.get_network(self.num_planning_steps)
 
         # Load hydrological statistics:
         self.A = pd.read_excel("./data/hydrology/werklijn_params.xlsx")
 
         lowQ, highQ = werklijn_inv([0.992, 0.99992], self.A)
-        self.Qpeaks = np.unique(
-            np.asarray(
-                [np.random.uniform(lowQ, highQ) / 6 for _ in range(0, self.num_events)]
-            )
-        )[::-1]
+        self.Qpeaks = np.unique(np.asarray([np.random.uniform(lowQ, highQ) / 6 for _ in range(0, self.num_events)]))[
+            ::-1
+        ]
 
         # Probabiltiy of exceedence for the discharge @ Lobith (i.e. times 6)
         self.p_exc = 1 - werklijn_cdf(self.Qpeaks * 6, self.A)
@@ -75,9 +71,7 @@ class DikeNetwork:
 
     # Initialize hydrology at each node:
     def _initialize_hydroloads(self, node, time, Q_0):
-        node["cumVol"], node["wl"], node["Qpol"], node["hbas"] = (
-            init_node(0, time) for _ in range(4)
-        )
+        node["cumVol"], node["wl"], node["Qpol"], node["hbas"] = (init_node(0, time) for _ in range(4))
         node["Qin"], node["Qout"] = (init_node(Q_0, time) for _ in range(2))
         node["status"] = init_node(False, time)
         node["tbreach"] = np.nan
@@ -130,7 +124,6 @@ class DikeNetwork:
                     )
 
     def __call__(self, timestep=1, **kwargs):
-
         G = copy.deepcopy(self.G)
         Qpeaks = self.Qpeaks
         dikelist = self.dikelist
@@ -156,17 +149,13 @@ class DikeNetwork:
 
                     proj_node = G.nodes[f"RfR_projects {temporal_step}"]
                     # Cost of RfR project
-                    proj_node["cost"] += (
-                        kwargs[item] * proj_node[string1]["costs_1e6"] * 1e6
-                    )
+                    proj_node["cost"] += kwargs[item] * proj_node[string1]["costs_1e6"] * 1e6
 
                     # Iterate over the location affected by the project
                     for key in proj_node[string1].keys():
                         if key != "costs_1e6":
                             # Change in rating curve due to the RfR project
-                            G.nodes[key]["rnew"][:, 1] -= (
-                                kwargs[item] * proj_node[string1][key]
-                            )
+                            G.nodes[key]["rnew"][:, 1] -= kwargs[item] * proj_node[string1][key]
                 else:
                     # string1: dikename or EWS
                     # string2: name of uncertainty or lever
@@ -176,9 +165,7 @@ class DikeNetwork:
 
         # Percentage of people who can be evacuated for a given warning
         # time:
-        G.nodes["EWS"]["evacuation_percentage"] = G.nodes["EWS"]["evacuees"][
-            G.nodes["EWS"]["DaysToThreat"]
-        ]
+        G.nodes["EWS"]["evacuation_percentage"] = G.nodes["EWS"]["evacuees"][G.nodes["EWS"]["DaysToThreat"]]
 
         # Dictionary storing outputs:
         data = defaultdict(list)
@@ -188,9 +175,7 @@ class DikeNetwork:
                 node = G.nodes["A.0"]
                 waveshape_id = node["ID flood wave shape"]
 
-                time = np.arange(
-                    0, node["Qevents_shape"].loc[waveshape_id].shape[0], timestep
-                )
+                time = np.arange(0, node["Qevents_shape"].loc[waveshape_id].shape[0], timestep)
                 node["Qout"] = Qpeak * node["Qevents_shape"].loc[waveshape_id]
 
                 # Initialize hydrological event:
@@ -212,7 +197,6 @@ class DikeNetwork:
                         # Select current node:
                         node = G.nodes[dikelist[n]]
                         if node["type"] == "dike":
-
                             # Muskingum parameters:
                             C1 = node["C1"]
                             C2 = node["C2"]
@@ -230,9 +214,7 @@ class DikeNetwork:
                             )
 
                             # Transform Q in water levels:
-                            node["wl"][t] = Lookuplin(
-                                node["rnew"], 0, 1, node["Qin"][t]
-                            )
+                            node["wl"][t] = Lookuplin(node["rnew"], 0, 1, node["Qin"][t])
 
                             # Evaluate failure and, in case, Q in the floodplain and
                             # Q left in the river:
@@ -257,9 +239,7 @@ class DikeNetwork:
 
                             # Evaluate the volume inside the floodplain as the integral
                             # of Q in time up to time t.
-                            node["cumVol"][t] = (
-                                np.trapz(node["Qpol"]) * self.timestepcorr
-                            )
+                            node["cumVol"][t] = np.trapz(node["Qpol"]) * self.timestepcorr
 
                             Area = Lookuplin(node["table"], 4, 0, node["wl"][t])
                             node["hbas"][t] = node["cumVol"][t] / float(Area)
@@ -275,9 +255,7 @@ class DikeNetwork:
                     # If breaches occured:
                     if node["status"][-1] == True:
                         # Losses per event:
-                        node[f"losses {s}"].append(
-                            Lookuplin(node["table"], 6, 4, np.max(node["wl"]))
-                        )
+                        node[f"losses {s}"].append(Lookuplin(node["table"], 6, 4, np.max(node["wl"])))
 
                         node[f"deaths {s}"].append(
                             Lookuplin(node["table"], 6, 3, np.max(node["wl"]))
@@ -304,11 +282,7 @@ class DikeNetwork:
                 # Expected Annual Damage:
                 EAD = np.trapz(node[f"losses {s}"], self.p_exc)
                 # Discounted annual risk per dike ring:
-                disc_EAD = np.sum(
-                    discount(
-                        EAD, rate=G.nodes[f"discount rate {s}"]["value"], n=self.y_step
-                    )
-                )
+                disc_EAD = np.sum(discount(EAD, rate=G.nodes[f"discount rate {s}"]["value"], n=self.y_step))
 
                 # Expected Annual number of deaths:
                 END = np.trapz(node[f"deaths {s}"], self.p_exc)
