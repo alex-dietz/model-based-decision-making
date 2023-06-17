@@ -76,7 +76,7 @@ def get_model_for_problem_formulation(problem_formulation_id):
     rfr_lev = [f"{project_id}_RfR" for project_id in range(0, 5)]
 
     # Time of warning: 0, 1, 2, 3, 4 days ahead from the flood
-    EWS_lev = {"EWS_DaysToThreat": [0, 0]}  # days
+    EWS_lev = {"EWS_DaysToThreat": [0, 0.000000001]}  # days
 
     uncertainties = []
     levers = []
@@ -96,7 +96,7 @@ def get_model_for_problem_formulation(problem_formulation_id):
 
     # Early Warning System lever
     for lev_name in EWS_lev.keys():
-        levers.append(IntegerParameter(lev_name, EWS_lev[lev_name][0], EWS_lev[lev_name][1]))
+        levers.append(RealParameter(lev_name, EWS_lev[lev_name][0], EWS_lev[lev_name][1]))
 
     for dike in function.dikelist:
         # uncertainties in the form: locationName_uncertaintyName
