@@ -1,0 +1,12 @@
+﻿index,Policy code,0_RfR 0,1_RfR 0,2_RfR 0,3_RfR 0,4_RfR 0,EWS_DaysToThreat,A.1_DikeIncrease 0,A.2_DikeIncrease 0,A.3_DikeIncrease 0,A.4_DikeIncrease 0,A.5_DikeIncrease 0
+0,RfR-Ge DI-Ov max,1,1,1,0,0,0,0,0,0,10,10
+1,Di-Ge RfR-Ov max,0,0,0,1,1,0,10,10,10,0,0
+2,RWS_25 mixed,0,0,1,0,1,2,10,0,10,0,10
+3,RWS 1 v1,0,1,0,1,0,2,10,0,10,0,10
+4,RWS 2 v1,0,1,0,1,0,2,10,0,0,0,10
+5,RWS_analysts_1_v1,1,0,0,0,0,0,0,0,5,0,5
+6,RWS_analysts_1_v2,1,1,0,0,0,0,0,0,5,0,5
+7,GEL_analysts_1,0,0,1,1,0,1,4,0,2,2,0
+8,GEL_analysts_2,1,0,1,1,0,3,2,0,3,3,0
+9,GEL_analysts_3,0,0,0,0,0,1,4,2,3,0,3
+10,OvI_1,1,0,0,1,0,0,0,2,5,0,5
