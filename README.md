@@ -6,11 +6,15 @@ This repository contains the code and resources for a Flood Mitigation Project f
 
 The Ijssel River is a major river in the Netherlands that poses a significant flood risk due to its geographical location and the potential for heavy rainfall. This project seeks to develop effective flood mitigation strategies by utilizing data analysis and modeling techniques.
 
-The repository includes two main Jupyter Notebooks:
+The repository includes two three Jupyter Notebooks:
 
-open_exploration.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties.
+\_OpenExploration_pf1.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 1.
+\_OpenExploration_pf6.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 6.
 
 directed_search.ipynb: This notebook focuses on implementing a directed search for potential flood mitigation strategies. It uses robust decision making and optimization techniques to identify effective strategies.
+
+Furthermore, one Excel File is included:
+Support Sheet.xslx: This file contains the regret indicator calculation and the design for tables used in the report.
 
 ## Repository Structure
 
@@ -32,13 +36,17 @@ To run the project code, follow these steps:
 
 Clone the repository to your local machine using Git:
 
-bash
 Copy code
+
+```shell
 git clone https://github.com/alex-dietz/model-based-decision-making.git
+```
+
 Install the necessary dependencies. Ensure that you have Python 3.x and Jupyter Notebook installed. You can use pip to install the required Python packages:
 
-Copy code
+```shell
 pip install -r requirements.txt
+```
 
 ## License
 
