@@ -20,15 +20,22 @@ Support Sheet.xslx: This file contains the regret indicator calculation and the 
 
 The repository is structured as follows:
 
-data/: This directory contains the relevant datasets used in the project, including historical flood data, river flow measurements, and any other pertinent information.
-
-notebooks/: This directory contains the Jupyter Notebooks that form the core of the project. The open_exploration.ipynb notebook explores the data and identifies key patterns, while the directed_search.ipynb notebook focuses on developing flood mitigation strategies.
+final_assignment/data/: This directory contains the relevant datasets used in the project.
 
 models/: If applicable, this directory contains any pre-trained models or model configurations used in the project.
 
-reports/: This directory holds any reports or documentation related to the project. It may include findings, insights, and recommendations resulting from the analysis and modeling.
+report/: This directory holds the final report.
 
-utils/: This directory contains utility scripts or functions that support the notebooks or any other code used in the project.
+results/: This directory contains the results of the open exploration and directed search.
+
+## Problem Formulation
+
+For the Open Exploration problem formulation 1 and 6 are used. For the directed search only problem formulation 6 is used.
+Hence, disaggregated results were used in the analysis.
+
+## Results
+
+All data files can be found in /results/data. Data was stored in either compressed format or csv.
 
 ## Getting Started
 
