@@ -6,15 +6,15 @@ This repository contains the code and resources for a Flood Mitigation Project f
 
 The Ijssel River is a major river in the Netherlands that poses a significant flood risk due to its geographical location and the potential for heavy rainfall. This project seeks to develop effective flood mitigation strategies by utilizing data analysis and modeling techniques.
 
-The repository includes two three Jupyter Notebooks:
+The repository includes three Jupyter Notebooks:
 
-\_OpenExploration_pf1.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 1.
-\_OpenExploration_pf6.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 6.
+- \_OpenExploration_pf1.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 1.
+- \_OpenExploration_pf6.ipynb: This notebook provides an open exploration of the model, its levers, and uncertainties for problem formulation 6.
 
-directed_search.ipynb: This notebook focuses on implementing a directed search for potential flood mitigation strategies. It uses robust decision making and optimization techniques to identify effective strategies.
+- directed_search.ipynb: This notebook focuses on implementing a directed search for potential flood mitigation strategies. It uses robust decision making and optimization techniques to identify effective strategies.
 
 Furthermore, one Excel File is included:
-Support Sheet.xslx: This file contains the regret indicator calculation and the design for tables used in the report.
+Report tables - Gelderland.xslx: This file contains the regret indicator calculation and the design for tables used in the report.
 
 ## Repository Structure
 
